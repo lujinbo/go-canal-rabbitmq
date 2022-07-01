@@ -1,10 +1,11 @@
-# GO-CANAL
+# GO-CANAL-RabbitMQ
 [![Build Status](https://travis-ci.com/emmeair/go-canal.svg?branch=master)](https://travis-ci.com/emmeair/go-canal)
 [![codebeat badge](https://codebeat.co/badges/6e7ecb75-240a-498e-a73f-8813181b7490)](https://codebeat.co/projects/github-com-emmeair-go-canal-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/emmeair/go-canal)](https://goreportcard.com/report/github.com/emmeair/go-canal)
 [![codecov](https://codecov.io/gh/emmeair/go-canal/branch/master/graph/badge.svg)](https://codecov.io/gh/emmeair/go-canal)
 
-简单配置，可将数据库变更记录投递到系统中
+简单配置，可将数据库变更记录投递到RabbitMQ
+
 
 # 准备
 - 对于自建 MySQL , 需要先开启 Binlog 写入功能，配置 binlog-format 为 ROW 模式，my.cnf 中配置如下
@@ -24,21 +25,43 @@ GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'canal'@'%';
 -- GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
 FLUSH PRIVILEGES;
 ```
+- 本地测试需要安装RabbitMQ
+
+```
+下载镜像
+
+  docker pull rabbitmq:management
+
+启动镜像容器
+
+  docker run --name myrabbit -d -p 5672:5672 -p 15672:15672 镜像名字
+
+网页客户端
+
+  浏览器输入：http://127.0.0.1:15672/
+
+  账号：guest
+
+  密码：guest
+```
+
 # 开始
 - 修改配置文件config.json
 ```json5
 {
   "schema": [//监听订阅的库名
-    "test_tt"
+    "test"
   ],
   "mysqlInfo": {//需要使用哪个MySQL用户去订阅mysql-bin
     "addr": "ip:3306",
     "user": "canal",
     "password": "canal"
   },
-  "server": {//需要推送的tcp连接(需长链接)
-    "network": "tcp",
-    "addr": "ip:9501"
+  "rabbitmqInfo": {//需要推送的tcp连接(需长链接)
+    "dns": "amqp://guest:guest@127.0.0.1:5672/",
+    "queue": "test-queue2",
+    "exchange": "test-routingkey",
+    "routingkey": "test-exchange"
   }
 }
 ```
@@ -56,7 +79,7 @@ go run canal
 
 - 可直接下载执行文件 [releases]
 
-[releases]: https://github.com/emmeair/go-canal/releases
+[releases]: https://github.com/lujinbo/go-canal-rabbitmq/releases
 
 ```shell
 直接运行
@@ -71,6 +94,7 @@ ps -aux|grep canal
 
 - 推送成功消息示例
 
+// update情况下只推送有变化的字段到mq
 ```json5
 {
     "Action":"insert",   //行为 insert update delete
@@ -85,7 +109,4 @@ ps -aux|grep canal
 - TCP 断线重连默认3秒
 - MySQL 断线重连默认1秒
 
-
-
-
-
+本代码基于https://github.com/emmeair/go-canal fork并修改适应自己的业务
