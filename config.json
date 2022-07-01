@@ -1,0 +1,16 @@
+{
+  "schema": [
+    "test"
+  ],
+  "mysqlInfo": {
+    "addr": "127.0.0.1:3306",
+    "user": "root",
+    "password": "root"
+  },
+  "rabbitmqInfo": {
+    "dns": "amqp://guest:guest@127.0.0.1:5672/",
+    "queue": "test-queue2",
+    "exchange": "test-routingkey",
+    "routingkey": "test-exchange"
+  }
+}
