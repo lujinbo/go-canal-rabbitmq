@@ -1,0 +1,28 @@
+{
+  "name": "go-canal-rabbitmq",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://travis-ci.com/emmeair/go-canal.svg?branch=master)](https://travis-ci.com/emmeair/go-canal) [![codebeat badge](https://codebeat.co/badges/6e7ecb75-240a-498e-a73f-8813181b7490)](https://codebeat.co/projects/github-com-emmeair-go-canal-master) [![Go Report Card](https://goreportcard.com/badge/github.com/emmeair/go-canal)](https://goreportcard.com/report/github.com/emmeair/go-canal) [![codecov](https://codecov.io/gh/emmeair/go-canal/branch/master/graph/badge.svg)](https://codecov.io/gh/emmeair/go-canal)",
+  "main": ".cz-config.js",
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lujinbo/go-canal-rabbitmq.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lujinbo/go-canal-rabbitmq/issues"
+  },
+  "homepage": "https://github.com/lujinbo/go-canal-rabbitmq#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
